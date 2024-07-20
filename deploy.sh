@@ -4,11 +4,11 @@ docker build -t toxiczeina/multi-worker:latest -t toxiczeina/multi-worker:$SHA -
 
 docker push toxiczeina/multi-client:latest
 docker push toxiczeina/multi-server:latest
-docker push toxcizeina/multi-worker:latest
+docker push toxiczeina/multi-worker:latest
 
 docker push toxiczeina/multi-client:$SHA
 docker push toxiczeina/multi-server:$SHA
-docker push toxcizeina/multi-worker:$SHA
+docker push toxiczeina/multi-worker:$SHA
 
 kubectl apply -f k8s
 kubectl set image deployments/server-deployment server=toxiczeina/multi-server:$SHA
