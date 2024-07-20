@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1 # Number of pods to create
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      volumes: # Setting up postgres with our PVC
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage # Find piece of storage with that name (inside volumes)
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres # Additional option only for postgres
+          env:
+            - name: POSTGRES_PASSWORD # We are overriding the default password of postgress with the one we store in our env variable
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
